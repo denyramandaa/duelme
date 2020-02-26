@@ -1,0 +1,262 @@
+body, div{
+  margin: 0;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+img{
+  width: 100%;
+}
+.enemy-area, .your-area{
+  height: 23vh;
+  background: url('assets/card-table.jpg') repeat;
+  z-index: 1;
+}
+.duel-area{
+  height: 54vh;
+  background: url('assets/main-table.jpg') repeat;
+}
+.area-inner{
+  max-width: 980px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  padding: 4px;
+}
+.area-inner span{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.avatar{
+  text-align: center;
+  width: 150px;
+  background: #ad0000;
+  height: 45px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card{
+  width: 130px;
+  height: 160px;
+  background-image: url('assets/card-bg.jpg');
+  background-size: cover;
+  margin-right: 2%;
+  cursor: pointer;
+}
+.card--spell{
+  background: rgba(29, 148, 0, 0.45);
+}
+.card:last-child{
+  margin: 0;
+}
+.open .card__inner{
+  position: relative;
+  margin: 2%;
+  height: 96%;
+  border: 1px double #000;
+  width: 96%;
+
+}
+.open .card--photo{
+  padding-top: 65%;
+  margin: 0 0px;
+  background-size: cover; 
+}
+.open .card--title, .open .card--value{
+  padding: 8px 0;
+  text-align: center;
+  font-weight: bold;
+  text-transform: capitalize;
+  font-size: 14px;
+}
+.card--value span{
+  display: inline-block;
+  width: auto;
+}
+.duel-area{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px 0;
+}
+.duel-area .card--action{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: .2s linear all;
+}
+.duel-area .card--action-icon{
+  width: 100px;
+}
+.duel-area .card:hover .card--action{
+  opacity: 1;
+}
+.duel-area .card:hover .card--value{
+  color: #fff;
+}
+.duel-area-enemy .card--action{
+  background: rgba(140, 0, 0, 0.8);
+}
+.your-area .draw-card{
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  width: 180px;
+  height: 220px;
+  background-image: url('assets/card-bg.jpg');
+  background-size: cover;
+}
+.enemy-area .draw-card{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 180px;
+  height: 220px;
+  background-image: url('assets/card-bg.jpg');
+  background-size: cover;
+}
+.bottom-lep{
+  position: absolute;
+  right: 50px;
+  bottom: 50px;
+  width: 70px;
+  text-align: center;
+}
+.bottom-reg{
+  position: absolute;
+  left: 50px;
+  bottom: 50px;
+  width: 70px;
+  text-align: center;
+}
+.point-step{
+  font-size: 50px;
+  color: #fff;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.point-step span{
+  display: block;
+  font-size: 12px;
+}
+.skip-button{
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  border-radius: 100%;
+  cursor: pointer;
+  margin: 0 auto;
+}
+.fix-height{
+  height: 168px;
+}
+.turnOn{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 5;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+  will-change: opacity;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
+}
+
+.slide-enter-active, .slide-leave-active {
+  transition: all 2s;
+}
+.slide-enter, .fade-leave-to {
+  transition: all 2s;
+  transform : translateY(5%);
+  opacity: 0;
+}
+.start{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('assets/main-table.jpg') repeat;
+}
+.startButton{
+  padding: 20px 0;
+  width: 120px;
+  text-align: center;
+  background: #ffe007;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  margin: 0 auto;
+}
+.start-container{
+  text-align: center;
+  width: 550px;
+  width: 550px;
+  color: #fff;
+}
+.startTitle{
+  font-size: 60px;
+}
+.enemyNotif{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 530px;
+  z-index: 4;
+  font-size: 70px;
+  text-align: center;
+  transform: translate(-50%,-50%) scale(0);
+  background: #9e1010;
+  padding: 40px;
+  color: #fff;
+  border-radius: 6px;
+}
+.yourNotif{
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 530px;
+    z-index: 4;
+    font-size: 70px;
+    text-align: center;
+    transform: translate(-50%,-50%) scale(0);
+    background: #199e10;
+    padding: 40px;
+    color: #fff;
+    border-radius: 6px;
+}
+.enemyNotif.active, .yourNotif.active{
+  animation: 2s linear muncullagi;
+}
+@keyframes muncullagi{
+  0%{
+    transform: translate(-50%,-50%) scale(0);
+  }
+  50%{
+    transform: translate(-50%,-50%) scale(1);
+  }
+  100%{
+    transform: translate(-50%,-50%) scale(0);
+  }
+}
