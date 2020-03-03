@@ -3,7 +3,7 @@
       <div class="area-inner fix-height open">
         <!-- <transition-group name="slide" mode="out-in">
         </transition-group> -->
-        <div class="card" v-for="(item, key) in cards" :key="key" @click="sendToMain(item, key);">
+        <div class="card" v-for="(item, key) in drawStarterCard" :key="key" @click="sendToMain(item, key);">
             <div class="card__inner">
                 <div class="card--title">{{ item.name }}</div>
                 <div class="card--photo" :style="{ 'background-image': 'url(' + item.img + ')'}"></div>
@@ -27,46 +27,47 @@
   </div>
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
-  props:{
-    cards: Array,
-    health: Number,
-    newCard: Object,
-    turn: Boolean,
-    step: Number
-  },
   data(){
     return{
+      cardInDesk: [],
       stepCount: 0
     }
   },
   watch:{
-    turn(){
-      if(this.turn == true){
-        console.log('my turn');
-        this.getNewCard();
-        this.stepCount=this.stepCount+this.step;
-      } 
+
+  },
+  computed: {
+    ...mapGetters({
+      allCard: 'allCard',
+    }),
+    drawStarterCard(){
+      var temp = []
+      for(var i=0;i<4;i++){
+        temp.push(this.randomPick());
+      }
+      return temp
     }
   },
   methods:{
-    sendToMain(a, b){
-      if(this.stepCount>0 && this.stepCount-1 >= 0){
-        this.stepCount=this.stepCount-1;
-        this.$emit('choosen', a);
-        this.cards.splice(b, 1);
-      }
+    ...mapActions({
+      fetchAllCards: 'fetchAllCards'
+    }),
+    randomPick(){
+        return this.allCard[Math.floor(Math.random()*this.allCard.length)]
     },
-    doneProcess(){
-      this.$emit('done', false);
-      this.$emit('firstfinish', false);
-    },
-    getNewCard(){
-      this.cards.push(this.newCard);
-    },
+    // drawStarterCard(){
+    //   for(var i=0;i<4;i++){
+    //     this.cardInDesk.push(this.randomPick());
+    //   }
+    // }
   },
   mounted(){
-    // console.log(this.cards);
-  }
+    
+  },
+  created(){
+    this.fetchAllCards();
+  },
 }
 </script>

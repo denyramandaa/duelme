@@ -20,27 +20,9 @@
         <div class="yourNotif"  :class="{ active : yourTurn }">Your Turn</div>
         <transition name="fade">
             <div v-if="start">
-                <enemy 
-                    :newCard="randomPick()" 
-                    :cards="enemyCard" 
-                    :health="enemyHealth" 
-                    @choosen="enemyPicked.push($event)" 
-                    @done="enemyTurn = $event"
-                    :turn="enemyTurn" 
-                    :step="enemyPointStep"
-                    @firstfinish="enemyFirstTurn = $event">
-                </enemy>
-                <main-stage :yourCard="yourPicked" :enemyCard="enemyPicked"></main-stage>
-                <your 
-                    :newCard="randomPick()" 
-                    :cards="yourCard" 
-                    :health="yourHealth" 
-                    @choosen="yourPicked.push($event)" 
-                    @done="yourTurn = $event"
-                    :turn="yourTurn" 
-                    :step="yourPointStep"
-                    @firstfinish="yourFirstTurn = $event">
-                </your>
+                <enemy></enemy>
+                <main-stage></main-stage>
+                <your></your>
             </div>
         </transition>
     </div>
@@ -129,7 +111,6 @@
         mounted(){
             this.$nextTick(function(){
                 this.startGame();
-                this.yourTurn = true;
             });
         }
     }

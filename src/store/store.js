@@ -71,7 +71,7 @@ export const store = new Vuex.Store({
           commit('fetchAllCards', data)
         })
         .catch( error => console.log(error))
-    }
+    },
   },
   mutations: {
     fetchAllCards(state, payload){
