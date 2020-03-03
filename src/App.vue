@@ -65,7 +65,7 @@
                 yourHealth: 50,
                 enemyHealth: 50,
                 yourPointStep: 1,
-                enemyPointStep: 2,
+                enemyPointStep: 1,
                 yourCard: [],
                 enemyCard:[],
                 yourPicked:[],

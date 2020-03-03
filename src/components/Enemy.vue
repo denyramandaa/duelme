@@ -47,7 +47,7 @@ export default {
         },2000);
         setTimeout(function(){
           self.doneProcess();
-        },10000);
+        },6000);
       }
     }
   },
