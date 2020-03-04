@@ -3,7 +3,7 @@
       <div class="area-inner fix-height open">
         <!-- <transition-group name="slide" mode="out-in">
         </transition-group> -->
-        <div class="card" v-for="(item, key) in drawStarterCard" :key="key" @click="sendToMain(item, key);">
+        <div class="card" v-for="(item, key) in playerCard" :key="key" @click="sendToMainStage(item, key);">
             <div class="card__inner">
                 <div class="card--title">{{ item.name }}</div>
                 <div class="card--photo" :style="{ 'background-image': 'url(' + item.img + ')'}"></div>
@@ -17,12 +17,12 @@
         </div>
       </div>
       <div class="area-inner">
-        <div class="avatar">Player<br>{{ health }}</div>
+        <div class="avatar">Player<br>{{ playerHealth }}</div>
       </div>
       <div class="draw-card"></div>
       <div class="bottom-lep">
-        <div class="point-step"> <span>StepCount</span> {{ stepCount }}</div>
-        <div class="skip-button" @click="doneProcess()" v-if="turn">DONE</div>
+        <div class="point-step"> <span>StepCount</span> {{ playerTurnCounter }}</div>
+        <div class="skip-button" @click="doneProcess()" v-if="playerTurn">DONE</div>
       </div>
   </div>
 </template>
@@ -31,43 +31,57 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data(){
     return{
-      cardInDesk: [],
-      stepCount: 0
+      stepCount: 0,
+      firstStep: true
     }
   },
   watch:{
-
+    playerTurn(){
+      if(this.playerTurn){
+        this.$store.state.playerTurnCounter += 4
+        if(!this.firstStep) this.getNewCard();
+      }
+    }
   },
   computed: {
     ...mapGetters({
       allCard: 'allCard',
-    }),
-    drawStarterCard(){
-      var temp = []
-      for(var i=0;i<4;i++){
-        temp.push(this.randomPick());
-      }
-      return temp
-    }
-  },
-  methods:{
-    ...mapActions({
-      fetchAllCards: 'fetchAllCards'
+      playerHealth: 'playerHealth',
+      playerTurn: 'playerTurn',
+      playerTurnCounter: 'playerTurnCounter',
+      playerCard: 'playerCard'
     }),
     randomPick(){
-        return this.allCard[Math.floor(Math.random()*this.allCard.length)]
+      return this.allCard[Math.floor(Math.random()*this.allCard.length)]
     },
-    // drawStarterCard(){
-    //   for(var i=0;i<4;i++){
-    //     this.cardInDesk.push(this.randomPick());
-    //   }
-    // }
+  },
+  methods:{
+    doneProcess(){
+      this.$store.state.playerTurn = false;
+      this.$store.state.enemyTurn = true;
+      this.firstStep = false;
+    },
+    ...mapActions({
+        addPlayerCard: 'addPlayerCard',
+        addPlayerCardOnStage: 'addPlayerCardOnStage',
+        decrasePlayerCard: 'decrasePlayerCard'
+    }),
+    sendToMainStage(card, index){
+      if(this.$store.state.playerTurnCounter-3 >= 0){
+        this.addPlayerCardOnStage(card);
+        this.decrasePlayerCard(index);
+        this.$store.state.playerTurnCounter -= 3;
+      }
+    },
+    getNewCard(){
+      this.addPlayerCard(this.randomPick);
+    },
   },
   mounted(){
-    
+
   },
   created(){
-    this.fetchAllCards();
-  },
+    this.$store.state.playerTurn = true;
+  }
 }
 </script>
