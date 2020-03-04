@@ -3,7 +3,7 @@
       <div class="area-inner fix-height open">
         <!-- <transition-group name="slide" mode="out-in">
         </transition-group> -->
-        <div class="card" v-for="(item, key) in cards" :key="key" @click="sendToMain(item, key);">
+        <div class="card" v-for="(item, key) in playerCard" :key="key" @click="sendToMainStage(item, key);">
             <div class="card__inner">
                 <div class="card--title">{{ item.name }}</div>
                 <div class="card--photo" :style="{ 'background-image': 'url(' + item.img + ')'}"></div>
@@ -17,56 +17,71 @@
         </div>
       </div>
       <div class="area-inner">
-        <div class="avatar">Player<br>{{ health }}</div>
+        <div class="avatar">Player<br>{{ playerHealth }}</div>
       </div>
       <div class="draw-card"></div>
       <div class="bottom-lep">
-        <div class="point-step"> <span>StepCount</span> {{ stepCount }}</div>
-        <div class="skip-button" @click="doneProcess()" v-if="turn">DONE</div>
+        <div class="point-step"> <span>StepCount</span> {{ playerTurnCounter }}</div>
+        <div class="skip-button" @click="doneProcess()" v-if="playerTurn">DONE</div>
       </div>
   </div>
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
-  props:{
-    cards: Array,
-    health: Number,
-    newCard: Object,
-    turn: Boolean,
-    step: Number
-  },
   data(){
     return{
-      stepCount: 0
+      stepCount: 0,
+      firstStep: true
     }
   },
   watch:{
-    turn(){
-      if(this.turn == true){
-        console.log('my turn');
-        this.getNewCard();
-        this.stepCount=this.stepCount+this.step;
-      } 
+    playerTurn(){
+      if(this.playerTurn){
+        this.$store.state.playerTurnCounter += 4
+        if(!this.firstStep) this.getNewCard();
+      }
     }
   },
+  computed: {
+    ...mapGetters({
+      allCard: 'allCard',
+      playerHealth: 'playerHealth',
+      playerTurn: 'playerTurn',
+      playerTurnCounter: 'playerTurnCounter',
+      playerCard: 'playerCard'
+    }),
+    randomPick(){
+      return this.allCard[Math.floor(Math.random()*this.allCard.length)]
+    },
+  },
   methods:{
-    sendToMain(a, b){
-      if(this.stepCount>0 && this.stepCount-1 >= 0){
-        this.stepCount=this.stepCount-1;
-        this.$emit('choosen', a);
-        this.cards.splice(b, 1);
+    doneProcess(){
+      this.$store.state.playerTurn = false;
+      this.$store.state.enemyTurn = true;
+      this.firstStep = false;
+    },
+    ...mapActions({
+        addPlayerCard: 'addPlayerCard',
+        addPlayerCardOnStage: 'addPlayerCardOnStage',
+        decrasePlayerCard: 'decrasePlayerCard'
+    }),
+    sendToMainStage(card, index){
+      if(this.$store.state.playerTurnCounter-3 >= 0){
+        this.addPlayerCardOnStage(card);
+        this.decrasePlayerCard(index);
+        this.$store.state.playerTurnCounter -= 3;
       }
     },
-    doneProcess(){
-      this.$emit('done', false);
-      this.$emit('firstfinish', false);
-    },
     getNewCard(){
-      this.cards.push(this.newCard);
+      this.addPlayerCard(this.randomPick);
     },
   },
   mounted(){
-    // console.log(this.cards);
+
+  },
+  created(){
+    this.$store.state.playerTurn = true;
   }
 }
 </script>

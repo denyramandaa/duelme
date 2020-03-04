@@ -2,7 +2,7 @@
   <div class="duel-area">
       <div class="duel-area-enemy">
           <div class="area-inner open">
-            <div class="card" v-for="(item, key) in enemyCard" :key="key">
+            <div class="card" v-for="(item, key) in enemyCardsOnStage" :key="key">
                 <div class="card__inner">
                     <div class="card--title">{{ item.name }}</div>
                     <div class="card--photo" :style="{ 'background-image': 'url(' + item.img + ')'}"></div>
@@ -23,7 +23,7 @@
       </div>
       <div class="duel-area-yours">
           <div class="area-inner open">
-            <div class="card" v-for="(item, key) in yourCard" :key="key">
+            <div class="card" v-for="(item, key) in playerCardsOnStage" :key="key">
                 <div class="card__inner">
                     <div class="card--title">{{ item.name }}</div>
                     <div class="card--photo" :style="{ 'background-image': 'url(' + item.img + ')'}"></div>
@@ -47,10 +47,17 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   props:{
     yourCard: Array,
     enemyCard: Array
   },
+  computed: {
+    ...mapGetters({
+      enemyCardsOnStage: 'enemyCardsOnStage',
+      playerCardsOnStage: 'playerCardsOnStage',
+    }),
+  }
 }
 </script>
