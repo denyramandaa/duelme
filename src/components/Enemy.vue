@@ -38,7 +38,7 @@ export default {
         },2000);
         setTimeout(function(){
           self.doneProcess();
-        },6000);
+        },3000);
       }
     }
   },

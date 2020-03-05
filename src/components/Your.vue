@@ -60,6 +60,7 @@ export default {
       this.$store.state.playerTurn = false;
       this.$store.state.enemyTurn = true;
       this.firstStep = false;
+      this.$store.dispatch('refreshCardStatus');
     },
     ...mapActions({
         addPlayerCard: 'addPlayerCard',

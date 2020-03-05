@@ -100,12 +100,13 @@ img{
 .duel-area .card--action-icon{
   width: 100px;
 }
-.duel-area .card:hover .card--action{
+.duel-area .card:hover .card--action, .duel-area .card.clicked .card--action{
   opacity: 1;
 }
-.duel-area .card:hover .card--value{
+.duel-area .card:hover .card--value, .duel-area .card.clicked .card--value{
   color: #fff;
 }
+
 .duel-area-enemy .card--action{
   background: rgba(140, 0, 0, 0.8);
 }

@@ -20,13 +20,13 @@ export const store = new Vuex.Store({
 
     enemyCard: [],
     enemyCardsOnStage: [],
-    enemyHealth: 100,
+    enemyHealth: 25,
     enemyTurn: false,
     enemyTurnCounter: 0,
 
     playerCard: [],
     playerCardsOnStage: [],
-    playerHealth: 100,
+    playerHealth: 25,
     playerTurn: false,
     playerTurnCounter: 0,
 
@@ -122,6 +122,38 @@ export const store = new Vuex.Store({
         })
         .catch( error => console.log(error))
     },
+    changeStatusAttack({commit, state}, payload){
+      const getTheItem = state.playerCardsOnStage.findIndex( ob => ob.id === payload.id && ob.atk === payload.atk )
+      if ( getTheItem > -1 ) commit('changeStatusAttack', getTheItem);
+    },
+    refreshCardStatus({commit}){
+      commit('refreshCardStatus');
+    },
+    destroyPlayerCard({commit, state}, payload){
+      const getTheItem = state.playerCardsOnStage.findIndex( ob => ob.id === payload.id && ob.atk === payload.atk )
+      if ( getTheItem > -1 ) commit('destroyPlayerCard', getTheItem);
+    },
+    updatePlayerCard({commit, state}, payload){
+      const getTheItem = state.playerCardsOnStage.findIndex( ob => ob.id === payload.item.id && ob.atk === payload.item.atk )
+      const up = {
+        idx: getTheItem,
+        atk: payload.res
+      }
+      if ( getTheItem > -1 ) commit('updatePlayerCard', up);
+    },
+    destroyEnemyCard({commit, state}, payload){
+      const getTheItem = state.enemyCardsOnStage.findIndex( ob => ob.id === payload.id && ob.atk === payload.atk )
+      if ( getTheItem > -1 ) commit('destroyEnemyCard', getTheItem);
+    },
+    updateEnemyCard({commit, state}, payload){
+      const getTheItem = state.enemyCardsOnStage.findIndex( ob => ob.id === payload.item.id && ob.atk === payload.item.atk )
+      const up = {
+        idx: getTheItem,
+        def: payload.res
+      }
+      if ( getTheItem > -1 ) commit('updateEnemyCard', up);
+    }
+    
   },
   mutations: {
     addEnemyCard(state, payload){
@@ -144,6 +176,27 @@ export const store = new Vuex.Store({
     },
     fetchAllCards(state, payload){
       state.allCard = payload;
+    },
+    changeStatusAttack(state, payload){
+      state.playerCardsOnStage[payload].attacking = true;
+    },
+    refreshCardStatus(state){
+      for(var i=0;i<state.playerCardsOnStage.length;i++){
+        state.playerCardsOnStage[i].clicked = false;
+        state.playerCardsOnStage[i].attacking = false;
+      }
+    },
+    destroyPlayerCard(state, payload){
+      state.playerCardsOnStage.splice(payload, 1)
+    },
+    destroyEnemyCard(state, payload){
+      state.enemyCardsOnStage.splice(payload, 1)
+    },
+    updatePlayerCard(state, payload){
+      state.playerCardsOnStage[payload.idx].atk = payload.atk
+    },
+    updateEnemyCard(state, payload){
+      state.enemyCardsOnStage[payload.idx].def = payload.def
     },
   }
 });
